@@ -21,6 +21,11 @@ const servidoresDatos = [
 let turnoRR = 0;
 let enEscritura = false;
 
+//Activar la interfaz de usuario para el coordinador
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+
 // Funcion GET para la solicitud de lectura
 app.get('/api/recurso', async (req, res) => {
     while (enEscritura) {

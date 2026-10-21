@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pruebas Práctica 6--Servicios WEB</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; border: 1px solid #ccc; borderRadius: 8px; }
+        input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .box { background: #f4f4f4; padding: 15px; margin-top: 15px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Práctica 6 - Servicios WEB</h2>
+    
+    <label>URL del Coordinador:</label>
+    <input type="text" id="urlCoordinador" value="http://localhost:8080/api/recurso">
+
+    <h3>Operaciones</h3>
+    <button onclick="ejecutarGet()">1. Consultar Valor</button>
+    
+    <hr>
+    <label>Cantidad para escritura:</label>
+    <input type="number" id="cantidad" value="5">
+    <button onclick="ejecutarPost()">2. Enviar Actualización</button>
+
+    <div class="box">
+        <h4>Resultado:</h4>
+        <pre id="output">Presiona un botón para probar...</pre>
+    </div>
+
+    <script>
+        async function ejecutarGet() {
+            const url = document.getElementById('urlCoordinador').value;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                document.getElementById('output').textContent = "Error al conectar con el servidor.";
+            }
+        }
+
+        async function ejecutarPost() {
+            const url = document.getElementById('urlCoordinador').value;
+            const incremento = document.getElementById('cantidad').value;
+            try {
+                document.getElementById('output').textContent = "Enviando en 5 segundos...";
+                await new Promise(resolve => setTimeout(resolve, 5000));
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ incremento: parseInt(incremento) })
+                });
+                const data = await res.json();
+                document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                document.getElementById('output').textContent = "Error al enviar la actualización.";
+            }
+        }
+    </script>
+</body>
+</html>
